@@ -1,5 +1,4 @@
 import 'package:alphacommunity/data/respository.dart';
-import 'package:alphacommunity/ui/screens/home_screen.dart';
 import 'package:alphacommunity/ui/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,10 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  RepositoryProvider(
-        create: (context) => MainRepository(),
-        child: const SplashScreen(),
-      ),
+      home:  const SplashScreen(),
     );
   }
 }
