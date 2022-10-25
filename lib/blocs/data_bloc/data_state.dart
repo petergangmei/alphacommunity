@@ -15,6 +15,23 @@ class UserLoadedState extends DataState {
 }
 
 
+// get state -----
+class LoadingHomeDataState extends DataState {
+  @override
+  List<Object> get props => [];
+}
+
+class LoadedHomeDataState extends DataState {
+  @override
+  List<Object> get props => [];
+}
+
+class LoadedHomeDataErrorState extends DataState {
+  @override
+  List<Object> get props => [];
+}
+
+
 
 // get token ----
 class LoadingTokenState extends DataState {

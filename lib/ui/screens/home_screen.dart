@@ -1,5 +1,6 @@
 import 'package:alphacommunity/blocs/data_bloc/data_bloc.dart';
 import 'package:alphacommunity/data/respository.dart';
+import 'package:alphacommunity/data/sharepreference.dart';
 import 'package:alphacommunity/ui/widgets/appDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,8 +11,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    
     return BlocProvider(
-      create: (context) => DataBloc(RepositoryProvider.of<MainRepository>(context),)..add(GetTokenEvent()),
+      // create: (context) => DataBloc(RepositoryProvider.of<MainRepository>(context),)..add(LoadHomedataEvent()),
+      create: (context) => DataBloc(RepositoryProvider.of<MainRepository>(context),),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Alpha Community"),
@@ -20,6 +24,12 @@ class HomeScreen extends StatelessWidget {
         drawer: const appDrawerWidget(),
         body: BlocBuilder<DataBloc, DataState>(
           builder: (context, state) {
+            print('---- is first start ${global.firstStart}------');
+            if(global.firstStart){
+              BlocProvider.of<DataBloc>(context).add(GetTokenEvent());
+              global.firstStart = false;
+              setPrefsFirstStart(false);
+            }
             return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -30,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: () {
                         print('----click in ui----');
-                        BlocProvider.of<DataBloc>(context).add(GetTokenEvent());
+                        BlocProvider.of<DataBloc>(context).add(LoadHomedataEvent());
                       },
                       child: const Text("click")),
                 )
@@ -41,4 +51,9 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  
+  
+  
+  
 }

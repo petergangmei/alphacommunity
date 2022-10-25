@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:alphacommunity/data/models/homedataModel.dart';
 import 'package:alphacommunity/data/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -9,21 +11,59 @@ import 'package:alphacommunity/global.dart' as global;
 
 class MainRepository {
   // /key/recent
-  String endpoint2 = 'https://reqres.in/api/users?page=2f';
+  String endpoint2 = 'https://reqres.in/api/users?page=1';
 
   String endpoint = 'https://alphacommunity.in/api/mobile-app/';
 
+  // String endpointHomeData = 'https://alphacommunity.in/api/mobile-app/get-home-data/';
 
+  
   Future<List<UserModel>> getUsers() async{
-    Response  response = await http.get(Uri.parse(endpoint2));
-    if(response.statusCode ==2000){
+
+    final response = await http.get(Uri.parse(endpoint2));
+
+    if(response.statusCode ==200){
       final List result = jsonDecode(response.body)['data'];
-      return result.map(((e) => UserModel.fromJson(e))).toList();
+      // print('---- response : ${result['data']}');
+
+      return result.map((e)=> UserModel.fromJson(e)).toList();
+    }else{
+      print('----- from repository fail error: ${response.reasonPhrase}');
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+  Future<List<HomedataModel>> getHomeData() async{
+    print(global.tokenValue);
+    final response = await http.post(
+      Uri.parse('${endpoint}get-home-data/'),
+      body: {
+        'payload': global.tokenValue
+      },
+    );
+
+    print('---from respository---- ${response.statusCode}');
+
+
+
+    final List result = jsonDecode(response.body)['response']['fc_inline_data'];
+    // print('------ result ${result}---------------') ;
+    // return result.map((e) => HomedataModel.fromJson(e)).toList();
+
+    if(response.statusCode == 200){
+      print('----- from repository success  ------');
+      // print("----abc: ${result['response']['fc_inline_data']}");
+
+      return result.map(((e) => HomedataModel.fromJson(e))).toList();
+      // return "abc";
 
     }else{
-      throw  Exception(response.reasonPhrase);
+      print('----- from repository fail error: ${response.reasonPhrase}');
+      throw Exception(response.reasonPhrase);
+      
     }
-  }  
+  }
+
   
   // 0370BBA349
   getToken() async {
@@ -31,13 +71,9 @@ class MainRepository {
     // ignore: unused_local_variable
     final response = await http.post(
       Uri.parse('${endpoint}generate-token/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
+      body: {
         'employee_id': "0370BBA349",
-      }),
-
+      },
       
     );
 

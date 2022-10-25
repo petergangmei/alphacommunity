@@ -9,7 +9,7 @@ class GetTokenEvent extends DataEvent{
   List<Object> get props => [];  
 }
 
-class LoadUserEvent extends DataEvent{
+class LoadHomedataEvent extends DataEvent{
 @override
   List<Object> get props => [];
 }

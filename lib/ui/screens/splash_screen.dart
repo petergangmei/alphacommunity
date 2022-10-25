@@ -41,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 getInitValue() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   global.tokenValue = prefs.getString("tokenValue")!;
+  global.firstStart = prefs.getBool('firstStart')!;
   
     // prefs.setString("tokenValue", data["response"]['token']);
 }
